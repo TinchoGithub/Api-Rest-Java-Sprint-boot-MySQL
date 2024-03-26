@@ -1,5 +1,9 @@
-# Api Rest Java | Spring Boot | MySQL
+# Api Rest Manipulación de Usuarios
 
 ### Descripcion
 
-Api Rest realizado con Java y Spring Boot para crear, actualizar, leer y eliminar usuarios de una base de datos MySQL.
+* Desarrollo de la API: Java, Spring Boot
+* Persistencia y maniulación de Datos: MySQL
+* Patrón DTO
+* Cliente Http: Postman
+  
