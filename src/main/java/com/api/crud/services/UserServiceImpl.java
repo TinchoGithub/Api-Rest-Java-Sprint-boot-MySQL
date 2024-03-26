@@ -6,8 +6,9 @@ import com.api.crud.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,8 +17,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public ArrayList<UserModel> getUsers() {
-        return (ArrayList<UserModel>) userRepository.findAll();
+    public List<UserDTO> getUsers() {
+        List<UserModel> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getById(Long id) {
         final Optional<UserModel> usuarioEncontrado = userRepository.findById(id);
         final UserModel usuarioDB = usuarioEncontrado.get();
-        return new UserDTO(usuarioDB.getFirstName(), usuarioDB.getLastName());
+        return new UserDTO(usuarioDB.getFirstName(), usuarioDB.getLastName(), usuarioDB.getEmail(), usuarioDB.getAddress());
     }
 
     @Override
@@ -52,42 +56,13 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
-    /*
-    @Autowired
-    IUserRepository userRepository;
-
-    public ArrayList<UserModel> getUsers(){
-        return (ArrayList<UserModel>) userRepository.findAll();
+    private UserDTO convertToDTO(UserModel user){
+        UserDTO dto = new UserDTO();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setAddress(user.getAddress());
+        return dto;
     }
-
-    public UserModel saveUser(UserModel user){
-        return userRepository.save(user);
-    }
-
-    public Optional<UserModel> getById(Long id){
-        return userRepository.findById(id);
-    }
-
-    public UserModel uptdateById(UserModel request, Long id){
-        UserModel user = userRepository.findById(id).get();
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-
-        return user;
-    }
-
-    public Boolean deleteUser(Long id){
-        try {
-            userRepository.deleteById(id);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-     */
 
 }

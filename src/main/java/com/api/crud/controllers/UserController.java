@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -16,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("getAll")
-    public ArrayList<UserModel> getUsers(){
+    public List<UserDTO> getUsers(){
         return this.userService.getUsers();
     }
 
